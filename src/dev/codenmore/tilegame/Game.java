@@ -1,11 +1,17 @@
 package dev.codenmore.tilegame;
 
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
+
 import dev.codenmore.tilegame.display.Display;
 
 public class Game implements Runnable {
 	private Display display;
 	private Thread thread;
 	private boolean running = false;
+	private BufferStrategy bs;
+	private Graphics g; 
+	
 	
 	// not sure why public
 	public int width,height;
@@ -31,8 +37,21 @@ public class Game implements Runnable {
 	}
 	
 	private void render() {
+		bs = display.getCanvas().getBufferStrategy();
+		if (bs == null){
+			display.getCanvas().createBufferStrategy(3);
+			return;
+		}
 		
+		g=bs.getDrawGraphics();
 		
+		//Draw Here!
+		
+		g.fillRect(0, 0, width, height);
+		//End Drawing!
+		
+		bs.show();
+		g.dispose();
 	}
 
 	private void tick() {
